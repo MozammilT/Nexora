@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Layout from "./pages/Layout";
+import Dashboard from "./pages/Dashboard";
+import WriteArticle from "./pages/WriteArticle";
+import ReviewResume from "./pages/ReviewResume";
+import RemoveObject from "./pages/RemoveObject";
+import RemoveBackground from "./pages/RemoveBackground";
+import GenerateImages from "./pages/GenerateImages";
+import BlogTitle from "./pages/BlogTitle";
+import Community from "./pages/Community";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/ai" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="write-article" element={<WriteArticle />} />
+          <Route path="review-resume" element={<ReviewResume />} />
+          <Route path="remove-object" element={<RemoveObject />} />
+          <Route path="remove-background" element={<RemoveBackground />} />
+          <Route path="generate-images" element={<GenerateImages />} />
+          <Route path="blog-title" element={<BlogTitle />} />
+          <Route path="community" element={<Community />} />
+        </Route>
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
