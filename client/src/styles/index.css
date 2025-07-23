@@ -5,6 +5,10 @@
   --color-primary: #0284c7;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 * {
   font-family: "Outfit", sans-serif;
 }
