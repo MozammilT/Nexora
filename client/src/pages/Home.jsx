@@ -1,7 +1,13 @@
+import Hero from "@/components/Hero";
 import Navbar from "../components/Navbar";
 
 function Home() {
-  return <Navbar />;
+  return (
+    <div>
+      <Navbar />
+      <Hero />
+    </div>
+  );
 }
 
 export default Home;
