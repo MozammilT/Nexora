@@ -1,6 +1,7 @@
 import { useTheme } from "../context/ThemeContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { Link } from "react-scroll";
 
 function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -30,33 +31,41 @@ function Navbar() {
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             AI Tools
           </span>
-          <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
-            AI Tools
-          </span>
+          <Link to="Ai-tools" smooth={true} duration={500} offset={-80}>
+            <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
+              AI Tools
+            </span>
+          </Link>
         </a>
         <a href="#" className="relative overflow-hidden h-6 group">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             Reviews
           </span>
-          <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
-            Reviews
-          </span>
+          <Link to="testimonials" smooth={true} duration={500} offset={-135}>
+            <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
+              Reviews
+            </span>
+          </Link>
         </a>
         <a href="#" className="relative overflow-hidden h-6 group">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             Pricing
           </span>
-          <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
-            Pricing
-          </span>
+          <Link to="pricing" smooth={true} offset={-110} duration={500}>
+            <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
+              Pricing
+            </span>
+          </Link>
         </a>
         <a href="#" className="relative overflow-hidden h-6 group">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
-            Docs
+            About
           </span>
-          <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
-            Docs
-          </span>
+          <Link to="about" smooth={true} offset={-210} duration={500}>
+            <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
+              About
+            </span>
+          </Link>
         </a>
       </div>
 
@@ -98,10 +107,10 @@ function Navbar() {
         className="absolute hidden top-48 text-base left-0 bg-black w-full flex-col items-center gap-4"
       >
         <a className="hover:text-indigo-600" href="#">
-          Products
+          AI Tools
         </a>
         <a className="hover:text-indigo-600" href="#">
-          Customer Stories
+          Reviews
         </a>
         <a className="hover:text-indigo-600" href="#">
           Pricing
@@ -109,9 +118,6 @@ function Navbar() {
         <a className="hover:text-indigo-600" href="#">
           Docs
         </a>
-        <button className="border border-slate-600 hover:bg-slate-800 px-4 py-2 rounded-full text-sm font-medium transition">
-          Contact
-        </button>
         <button className="bg-white hover:shadow-[0px_0px_30px_14px] shadow-[0px_0px_30px_7px] hover:shadow-white/50 shadow-white/50 text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-slate-100 transition duration-300">
           Get Started
         </button>

@@ -4,7 +4,7 @@ import { dark } from "@clerk/themes";
 
 function PricePlan() {
   return (
-    <div className="px-4 sm:px-20 xl:px-32 mb-20 z-20">
+    <div className="pricing px-4 sm:px-20 xl:px-32 mb-20 z-20">
       <Title
         title="Choose Your Plan"
         subtitle="Start for free and scale up as you grow. Find the perfect plan for your content creation needs."

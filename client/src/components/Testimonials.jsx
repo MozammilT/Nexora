@@ -33,7 +33,7 @@ const CheckIcon = () => {
 
 function Testimonials() {
   return (
-    <div className="px-4 sm:px-20 xl:px-32 mb-20">
+    <div className="testimonials px-4 sm:px-20 xl:px-32 mb-20">
       <Title
         title="Loved by Creators"
         subtitle="Don't just take our word for it. Here's what our users are saying."

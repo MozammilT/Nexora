@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-b from-[#000000] from-20% via-[#0c0c1c] via-70% to-[#1a1a2f] text-gray-300">
+    <footer className="about w-full bg-gradient-to-b from-[#000000] from-20% via-[#0c0c1c] via-70% to-[#1a1a2f] text-gray-300">
       <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col items-center">
         <div className="flex items-center space-x-3 mb-6">
           <h3 className="footer-heading text-3xl [text-shadow:0_0_7px_rgba(80,68,229,0.8),0_0_15px_rgba(80,68,229,0.6),0_0_30px_rgba(80,68,229,0.4)]">
