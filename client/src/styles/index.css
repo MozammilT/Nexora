@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bowlby+One&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -16,4 +17,10 @@
 
 body {
   background: #000000;
+}
+
+.footer-heading {
+  font-family: "Bowlby One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
