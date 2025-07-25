@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import AITools from "@/components/AiTools";
 import Testimonials from "@/components/Testimonials";
 import PricePlan from "@/components/PricePlan";
+import Footer from "@/components/Footer";
 
 function Home() {
   return (
@@ -12,6 +13,7 @@ function Home() {
       <AITools />
       <Testimonials />
       <PricePlan />
+      <Footer />
     </div>
   );
 }
