@@ -11,7 +11,11 @@ function Navbar() {
   const { openSignIn } = useClerk();
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center border bg-transparent border-slate-700 px-6 py-4 rounded-full text-white text-sm w-full max-w-2xl backdrop-blur-xs transition-all">
+    <nav
+      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center border border-slate-700 px-6 py-4 rounded-full text-white text-sm w-full backdrop-blur-sm transition-all ${
+        user ? "max-w-md" : "max-w-2xl"
+      }`}
+    >
       <a href="/">
         <svg
           width="32"
@@ -70,12 +74,11 @@ function Navbar() {
       </div>
 
       {user ? (
-        <div className="ml-10">
+        <div className="ml-10 mx-auto">
           <UserButton
             appearance={{
               elements: {
-                avatarBox:
-                  "h-8 w-8 border border-white rounded-full transition",
+                avatarBox: "border border-white rounded-full transition",
               },
             }}
           />
