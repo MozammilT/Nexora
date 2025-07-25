@@ -1,4 +1,5 @@
 function Footer() {
+  const date = new Date().getFullYear();
   return (
     <footer className="about w-full bg-gradient-to-b from-[#000000] from-20% via-[#0c0c1c] via-70% to-[#1a1a2f] text-gray-300">
       <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col items-center">
@@ -14,8 +15,7 @@ function Footer() {
       </div>
       <div className="border-t border-slate-200 max-w-5xl mx-auto">
         <div className="max-w-7xl mx-auto px-6 py-6 text-center text-sm font-normal">
-          <a href="https://prebuiltui.com">prebuiltui</a> ©2025. All rights
-          reserved.
+          <a href="#">Nexora</a> ©{date}. All rights reserved.
         </div>
       </div>
     </footer>
