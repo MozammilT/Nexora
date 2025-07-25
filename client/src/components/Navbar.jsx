@@ -31,7 +31,7 @@ function Navbar() {
         </svg>
       </a>
       <div className="hidden md:flex items-center gap-6 ml-7">
-        <a href="#" className="relative overflow-hidden h-6 group">
+        <div className="relative overflow-hidden h-6 group cursor-pointer">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             AI Tools
           </span>
@@ -40,8 +40,8 @@ function Navbar() {
               AI Tools
             </span>
           </Link>
-        </a>
-        <a href="#" className="relative overflow-hidden h-6 group">
+        </div>
+        <div href="#" className="relative overflow-hidden h-6 group">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             Reviews
           </span>
@@ -50,8 +50,8 @@ function Navbar() {
               Reviews
             </span>
           </Link>
-        </a>
-        <a href="#" className="relative overflow-hidden h-6 group">
+        </div>
+        <div href="#" className="relative overflow-hidden h-6 group">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             Pricing
           </span>
@@ -60,8 +60,8 @@ function Navbar() {
               Pricing
             </span>
           </Link>
-        </a>
-        <a href="#" className="relative overflow-hidden h-6 group">
+        </div>
+        <div href="#" className="relative overflow-hidden h-6 group">
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             About
           </span>
@@ -70,7 +70,7 @@ function Navbar() {
               About
             </span>
           </Link>
-        </a>
+        </div>
       </div>
 
       {user ? (
