@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/Navbar";
 import AITools from "@/components/AiTools";
+import Testimonials from "@/components/Testimonials";
 
 function Home() {
   return (
@@ -8,6 +9,7 @@ function Home() {
       <Navbar />
       <Hero />
       <AITools />
+      <Testimonials />
     </div>
   );
 }
