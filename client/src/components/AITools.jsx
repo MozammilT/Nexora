@@ -75,7 +75,7 @@ function AITools() {
           "Everything you need to create, enhance, and optimize your content with cutting-edge AI technology."
         }
       />
-      <div className="">
+      <div className="mb-20">
         <div className="max-w-5xl mx-auto px-8">
           <HoverEffect items={projects} />
         </div>
