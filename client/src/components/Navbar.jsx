@@ -10,7 +10,7 @@ function Navbar() {
   const { openSignIn } = useClerk();
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center border bg-transparent border-slate-700 px-6 py-4 rounded-full text-white text-sm max-w-xl backdrop-blur-xs transition-all">
+    <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center border bg-transparent border-slate-700 px-6 py-4 rounded-full text-white text-sm w-full max-w-2xl backdrop-blur-xs transition-all">
       <a href="/">
         <svg
           width="32"
@@ -74,7 +74,7 @@ function Navbar() {
       ) : (
         <button
           onClick={openSignIn}
-          className="ml-20 max-sm:hidden bg-white relative z-10 hover:shadow-[0px_0px_30px_14px] shadow-[0px_0px_30px_7px] hover:shadow-white/50 shadow-white/50 text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-slate-100 transition duration-300"
+          className="ml-auto max-sm:hidden bg-white relative z-10 hover:shadow-[0px_0px_30px_14px] shadow-[0px_0px_30px_7px] hover:shadow-white/50 shadow-white/50 text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-slate-100 transition duration-300"
         >
           Get Started
         </button>
