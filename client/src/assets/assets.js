@@ -4,6 +4,8 @@ import user_group from "/user_group.png";
 import star_icon from "/star_icon.svg";
 import star_dull_icon from "/star_dull_icon.svg";
 import profile_img_1 from "/profile_img_1.png";
+import profile_img_2 from "/profile_img_2.png";
+import profile_img_3 from "/profile_img_3.png";
 import arrow_icon from "/arrow_icon.svg";
 import {
   SquarePen,
@@ -24,6 +26,8 @@ export const assets = {
   star_icon,
   star_dull_icon,
   profile_img_1,
+  profile_img_2,
+  profile_img_3,
   arrow_icon,
 };
 
@@ -82,25 +86,28 @@ export const dummyTestimonialData = [
   {
     image: assets.profile_img_1,
     name: "John Doe",
+    address: "Barcelona, Spain",
     title: "Marketing Director, TechCorp",
     content:
-      "ContentAI has revolutionized our content workflow. The quality of the articles is outstanding, and it saves us hours of work every week.",
+      "Nexora’s AI-powered solutions have streamlined our entire workflow. From brainstorming ideas to final content delivery, everything is faster, smarter, and more efficient than ever.",
     rating: 4,
   },
   {
-    image: assets.profile_img_1,
+    image: assets.profile_img_2,
     name: "Jane Smith",
+    address: "New York, USA",
     title: "Content Creator, TechCorp",
     content:
-      "ContentAI has made our content creation process effortless. The AI tools have helped us produce high-quality content faster than ever before.",
+      "Nexora has made our content creation process effortless. The AI tools have helped us produce high-quality content faster than ever before.",
     rating: 5,
   },
   {
-    image: assets.profile_img_1,
+    image: assets.profile_img_3,
     name: "David Lee",
+    address: "Seoul, South Korea",
     title: "Content Writer, TechCorp",
     content:
-      "ContentAI has transformed our content creation process. The AI tools have helped us produce high-quality content faster than ever before.",
+      "With Nexora, our team has unlocked creativity we never thought possible. The AI tools help us focus on strategy while handling repetitive tasks with precision.",
     rating: 4,
   },
 ];
