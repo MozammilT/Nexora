@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 
 export const HoverEffect = ({ items, className }) => {
   let [hoveredIndex, setHoveredIndex] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -14,12 +16,13 @@ export const HoverEffect = ({ items, className }) => {
       )}
     >
       {items.map((item, idx) => (
-        <a
+        <div
           href={item?.link}
           key={item?.link}
           className="relative group  block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
+          onClick={() => navigate(item.navigate)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
@@ -48,7 +51,7 @@ export const HoverEffect = ({ items, className }) => {
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>{item.description}</CardDescription>
           </Card>
-        </a>
+        </div>
       ))}
     </div>
   );
