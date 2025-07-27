@@ -86,6 +86,7 @@ export const HeroHighlight = ({ children, className, containerClassName }) => {
           `,
         }}
       />
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] bg-black"></div>
       <div className={cn("relative z-20", className)}>{children}</div>
     </div>
   );
