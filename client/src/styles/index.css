@@ -24,3 +24,8 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+.reset-tw,
+.reset-tw * {
+  all: revert !important;
+}
