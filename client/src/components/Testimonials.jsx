@@ -40,8 +40,8 @@ function Testimonials() {
       />
 
       <div className="flex flex-wrap gap-5 justify-center mt-15">
-        {dummyTestimonialData.map((item) => (
-          <CardSpotlight className="h-66 w-96 mb-10">
+        {dummyTestimonialData.map((item, idx) => (
+          <CardSpotlight className="h-66 w-96 mb-10" key={idx}>
             <div className="flex items-center gap-6">
               <img
                 className="w-12 h-12 rounded-full relative z-20"
