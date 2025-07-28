@@ -9,10 +9,12 @@ import RemoveBackground from "./pages/RemoveBackground";
 import GenerateImages from "./pages/GenerateImages";
 import BlogTitle from "./pages/BlogTitle";
 import Community from "./pages/Community";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <div>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ai" element={<Layout />}>
