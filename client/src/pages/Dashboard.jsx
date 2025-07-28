@@ -62,7 +62,7 @@ function Dashboard() {
                   {item.type} - {new Date(item.created_at).toLocaleDateString()}
                 </p>
               </div>
-              <div className="bg-[#9a9a9a] text-[#FFFFFF] border border-[#737475] rounded-full px-4 py-2 min-w-24 text-center">
+              <div className="bg-[#777777] text-white border border-[#737475] rounded-full px-4 py-2 min-w-24 text-center">
                 {item.type}
               </div>
             </div>
