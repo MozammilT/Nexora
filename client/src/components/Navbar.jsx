@@ -16,7 +16,7 @@ function Navbar() {
         user ? "max-w-md" : "max-w-2xl"
       }`}
     >
-      <a href="https://prebuiltui.com">
+      <a href="#">
         <svg
           width="32"
           height="32"
@@ -42,7 +42,10 @@ function Navbar() {
             </span>
           </Link>
         </div>
-        <div href="#" className="relative overflow-hidden h-6 group">
+        <div
+          href="#"
+          className="relative overflow-hidden h-6 group cursor-pointer"
+        >
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             Reviews
           </span>
@@ -52,7 +55,10 @@ function Navbar() {
             </span>
           </Link>
         </div>
-        <div href="#" className="relative overflow-hidden h-6 group">
+        <div
+          href="#"
+          className="relative overflow-hidden h-6 group cursor-pointer"
+        >
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             Pricing
           </span>
@@ -64,7 +70,7 @@ function Navbar() {
         </div>
         <div
           href="#"
-          className="relative overflow-hidden h-6 group max-sm:hidden"
+          className="relative overflow-hidden h-6 group max-sm:hidden cursor-pointer"
         >
           <span className="block group-hover:-translate-y-full transition-transform duration-300">
             About
