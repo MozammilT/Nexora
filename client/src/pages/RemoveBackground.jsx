@@ -35,7 +35,10 @@ function RemoveBackground() {
         <p className="mt-8 mb-4 text-base">Upload image</p>
 
         <div className="w-full max-w-4xl mx-auto min-h-60 border border-dashed bg-black border-neutral-800 rounded-lg">
-          <FileUpload onChange={handleFileUpload} />
+          <FileUpload
+            onChange={handleFileUpload}
+            message={"Supports JPG, PNG, and other image formats"}
+          />
         </div>
 
         <div
