@@ -35,7 +35,7 @@ function BlogTitle() {
       {/* Left Col */}
       <form className="bg-[#262626] w-full max-w-lg p-4 rounded-lg shadow-[0_4px_20px_rgba(80,68,229,0.3)]">
         <div className="flex gap-5">
-          <Sparkles className="size-6" />
+          <Sparkles className="size-6 text-[#8E37EB]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
             AI Title Generation
           </h1>
@@ -72,14 +72,14 @@ function BlogTitle() {
       {/* Right Col  */}
       <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[405px] max-h-[600px]">
         <div className="flex gap-5">
-          {/* <SquarePen className="text-[#2e79ff]" /> */}
+          <Hash className="size-5 text-[#8E37EB]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
             Generated Title
           </h1>
         </div>
         <div className="flex-1 flex justify-center items-center">
           <div className="items-center">
-            {/* <PencilLine className="size-10 mx-auto mb-4" /> */}
+            <Hash className="size-10 mx-auto mb-4" />
             <p className="text-sm font-light text-balance">
               Enter a topic and click "Generate Title” to get started
             </p>
