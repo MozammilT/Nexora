@@ -46,10 +46,10 @@ function WriteArticle() {
           {articleLength.map((item, idx) => (
             <div onClick={() => setSetected(idx)} key={idx}>
               <div
-                className={`border rounded-full w-fit font-light cursor-pointer ${
+                className={`border rounded-full w-fit font-light cursor-pointer transition-colors duration-200 ${
                   selected === idx
-                    ? "border-[#219be5] bg-blue-400/10"
-                    : "border-neutral-400 bg-neutral-400/10"
+                    ? "border-[#226BFF] bg-[#226BFF]/50 text-white"
+                    : "border-[#5a8aff] bg-[#5a8aff]/10 text-[#b2ccff] hover:bg-[#226BFF]/20"
                 }`}
               >
                 <p className="px-3 py-1.5 text-xs">{item.text}</p>
@@ -58,13 +58,13 @@ function WriteArticle() {
           ))}
         </div>
         <div className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white text-sm rounded-lg cursor-pointer px-4 py-2">
-          <SquarePen />
+          <SquarePen className="size-5" />
           <button>Generate Article</button>
         </div>
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col border border-[#5d5d5d] shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[365px] max-h-[600px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col border border-[#5d5d5d] shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[360px] max-h-[600px]">
         <div className="flex gap-5">
           <SquarePen className="text-[#2e79ff]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
