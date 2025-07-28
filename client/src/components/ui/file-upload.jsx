@@ -26,7 +26,7 @@ const secondaryVariant = {
   },
 };
 
-export const FileUpload = ({ onChange }) => {
+export const FileUpload = ({ onChange, accept = "image/*", message }) => {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
 
@@ -43,9 +43,10 @@ export const FileUpload = ({ onChange }) => {
     multiple: false,
     noClick: true,
     onDrop: handleFileChange,
-    accept: {
-      "image/*": [],
-    },
+    accept: accept.split(",").reduce((acc, type) => {
+      acc[type.trim()] = [];
+      return acc;
+    }, {}),
     onDropRejected: (errors) => {
       toast.error("Please upload only image files.", {
         position: "top-center",
@@ -68,7 +69,7 @@ export const FileUpload = ({ onChange }) => {
       >
         <input
           ref={fileInputRef}
-          accept="image/*"
+          accept={accept}
           id="file-upload-handle"
           type="file"
           onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
@@ -86,7 +87,7 @@ export const FileUpload = ({ onChange }) => {
             Drag or drop your files here or click to upload
           </p>
           <p className="relative z-20 font-light text-neutral-400 dark:text-neutral-400 text-xs mt-2">
-            Supports JPG, PNG, and other image formats
+            {message}
           </p>
           <div className="relative w-full mt-5 max-w-xl mx-auto">
             {files.length > 0 &&
