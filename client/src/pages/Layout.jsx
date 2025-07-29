@@ -146,7 +146,7 @@ export function Layout() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className={`flex flex-1 flex-col bg-black border-l`}>
+      <div className={`flex flex-1 flex-col bg-black border-l min-h-screen overflow-y-auto`}>
         <Outlet />
       </div>
     </div>

@@ -118,7 +118,12 @@ export const MobileSidebar = ({ className, children, ...props }) => {
   );
 };
 
-export const SidebarLink = ({ link, className, ...props }) => {
+export const SidebarLink = ({
+  link,
+  className,
+  isActive: _isActive,
+  ...props
+}) => {
   const { open, animate } = useSidebar();
   const location = useLocation();
   const isActive = location.pathname === link.path;

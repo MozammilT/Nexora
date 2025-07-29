@@ -63,7 +63,7 @@ function GenerateImages() {
               type="checkbox"
               checked={publish}
               className="sr-only peer"
-              onClick={(e) => setPublish(e.target.checked)}
+              onChange={(e) => setPublish(e.target.checked)}
             />
             <div className="w-9 h-5 bg-zinc-600 rounded-full peer-checked:bg-green-600 transition" />
             <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition peer-checked:translate-x-4"></span>
