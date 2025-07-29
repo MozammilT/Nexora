@@ -5,6 +5,8 @@ import { useState } from "react";
 
 function BlogTitle() {
   const [selected, setSetected] = useState(null);
+  const [loading, setLoading] = useState(null);
+
   const placeholders = [
     "What's the first rule of Fight Club?",
     "How chemistry became the coolest subject ever?",
@@ -28,6 +30,17 @@ function BlogTitle() {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("submitted");
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      console.log("submitted");
+    } catch (err) {
+    } finally {
+      setLoading(true);
+    }
   };
 
   return (
@@ -63,8 +76,15 @@ function BlogTitle() {
             </span>
           ))}
         </div>
-        <div className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg cursor-pointer px-4 py-2">
-          <Hash className="size-5" />
+        <div
+          onClick={submitHandler}
+          className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg cursor-pointer px-4 py-2"
+        >
+          {loading ? (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin cursor-pointer" />
+          ) : (
+            <Hash className="size-5" />
+          )}
           <button>Generate Title</button>
         </div>
       </form>

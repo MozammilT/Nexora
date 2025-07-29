@@ -5,6 +5,8 @@ import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-va
 
 function WriteArticle() {
   const [selected, setSetected] = useState(null);
+  const [loading, setLoading] = useState(null);
+
   const placeholders = [
     "What's the first rule of Fight Club?",
     "How chemistry became the coolest subject ever?",
@@ -23,6 +25,16 @@ function WriteArticle() {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("submitted");
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      console.log("submitted");
+    } catch (err) {
+    } finally {
+      setLoading(true);
+    }
   };
 
   return (
@@ -57,8 +69,15 @@ function WriteArticle() {
             </div>
           ))}
         </div>
-        <div className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white text-sm rounded-lg cursor-pointer px-4 py-2">
-          <SquarePen className="size-5" />
+        <div
+          onClick={submitHandler}
+          className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white text-sm rounded-lg cursor-pointer px-4 py-2"
+        >
+          {loading ? (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin cursor-pointer" />
+          ) : (
+            <SquarePen className="size-5" />
+          )}
           <button>Generate Article</button>
         </div>
       </form>
