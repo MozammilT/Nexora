@@ -38,7 +38,7 @@ export const auth = async (req, res, next) => {
       req.free_usage = currentFreeUsage;
     } else {
       console.log("[DEBUG][auth] Premium user - resetting free_usage to 0");
-      await clerkClient.users.updateMetadata(userId, {
+      await clerkClient.users.updateUserMetadata(userId, {
         privateMetadata: {
           ...user.privateMetadata,
           free_usage: 0,
