@@ -261,7 +261,7 @@ export const generateImage = async (req, res) => {
     });
   }
 
-  const { prompt, publish } = req.body;
+  const { prompt, publish, style } = req.body;
   if (!prompt) {
     return res.status(400).json({
       success: false,
@@ -269,6 +269,9 @@ export const generateImage = async (req, res) => {
     });
   }
   console.log("[generateImage] Prompt:", prompt);
+
+  const fullPrompt = `${prompt} in ${style} style`;
+  console.log("[generateImage] Full prompt: ", fullPrompt);
 
   const plan = req.plan;
   console.log("[generateImage] Plan:", plan);
