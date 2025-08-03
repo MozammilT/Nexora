@@ -3,7 +3,7 @@ import { Sparkles, Image, ImageIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 function GenerateImages() {
-  const [selected, setSetected] = useState(null);
+  const [style, setStyle] = useState(null);
   const [publish, setPublish] = useState("");
   const [loading, setLoading] = useState(null);
   const category = [
@@ -44,11 +44,11 @@ function GenerateImages() {
         <div className="grid grid-cols-4 gap-3">
           {category.map((item, idx) => (
             <span
-              onClick={() => setSetected(idx)}
+              onClick={() => setStyle(idx)}
               key={idx}
               className={`text-xs text-center px-4 py-2 rounded-full cursor-pointer transition-colors duration-200
         ${
-          selected === idx
+          style === idx
             ? "bg-green-500 text-white border border-green-400"
             : "bg-green-800/20 text-purple-200 border border-green-700 hover:bg-green-700/30"
         }`}
