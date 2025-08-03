@@ -186,6 +186,7 @@ export function PlaceholdersAndVanishInput({
         ref={canvasRef}
       />
       <input
+        required
         onChange={(e) => {
           if (!animating) {
             setValue(e.target.value);
