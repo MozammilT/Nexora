@@ -16,17 +16,9 @@ import {
   Users,
   LogOut,
 } from "lucide-react";
-import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
-import {
-  useUser,
-  useClerk,
-  SignIn,
-  UserProfile,
-  Protect,
-  SignOutButton,
-} from "@clerk/clerk-react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useUser, useClerk, SignIn, Protect } from "@clerk/clerk-react";
 
 export function Layout() {
   const navigate = useNavigate();
@@ -124,11 +116,7 @@ export function Layout() {
             </div>
           </div>
           <div className="w-full border-t border-gray-400 p-4 px-4 flex items-center justify-between">
-            <div
-              onClick={openUserProfile}
-              className="flex gap-2 items-center cursor-pointer"
-            >
-              <img src={user?.imageUrl} className="w-8 rounded-full" />
+            <div onClick={openUserProfile} className="cursor-pointer">
               <div>
                 <p className="text-sm text-gray-300">{user?.fullName}</p>
                 <div className="text-xs text-neutral-400 flex gap-0.5">
@@ -139,6 +127,10 @@ export function Layout() {
                 </div>
               </div>
             </div>
+            <House
+              className="h-5 w-5 shrink-0 text-neutral-200 hover:text-neutral-500 cursor-pointer"
+              onClick={() => navigate("/")}
+            />
             <LogOut
               className="h-5 w-5 shrink-0 text-neutral-200 hover:text-neutral-500 cursor-pointer"
               onClick={signOut}
@@ -146,7 +138,9 @@ export function Layout() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className={`flex flex-1 flex-col bg-black border-l min-h-screen overflow-y-auto`}>
+      <div
+        className={`flex flex-1 flex-col bg-black border-l min-h-screen overflow-y-auto`}
+      >
         <Outlet />
       </div>
     </div>
@@ -159,37 +153,36 @@ export function Layout() {
           "dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]"
         )}
       />
-      {/* Radial gradient for the container to give a faded look */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] bg-black"></div>
       <SignIn fallbackRedirectUrl="http://localhost:5173/ai" />
     </div>
   );
 }
 
-export const Logo = () => {
-  return (
-    <Link
-      to="/"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-black dark:text-white"
-      >
-        Admin Page
-      </motion.span>
-    </Link>
-  );
-};
-export const LogoIcon = () => {
-  return (
-    <Link
-      to="/"
-      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
-    >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
-    </Link>
-  );
-};
+// export const Logo = () => {
+//   return (
+//     <Link
+//       to="/"
+//       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+//     >
+//       <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+//       <motion.span
+//         initial={{ opacity: 0 }}
+//         animate={{ opacity: 1 }}
+//         className="font-medium whitespace-pre text-black dark:text-white"
+//       >
+//         Admin Page
+//       </motion.span>
+//     </Link>
+//   );
+// };
+// export const LogoIcon = () => {
+//   return (
+//     <Link
+//       to="/"
+//       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+//     >
+//       <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+//     </Link>
+//   );
+// };
