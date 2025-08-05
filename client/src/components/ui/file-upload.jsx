@@ -26,12 +26,16 @@ const secondaryVariant = {
   },
 };
 
-export const FileUpload = ({ onChange, accept = "image/*", message }) => {
-  const [files, setFiles] = useState([]);
+export const FileUpload = ({
+  onChange,
+  accept = "image/*",
+  message,
+  files,
+}) => {
+  // const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (newFiles) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     onChange && onChange(newFiles);
   };
 
