@@ -22,7 +22,7 @@ export const Card = React.memo(({ card, index, hovered, setHovered }) => (
         hovered === index ? "opacity-100" : "opacity-0"
       )}
     >
-      <div className="text-xl md:text-2xl font-medium bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-200">
+      <div className="text-xl md:text-2xl tracking-tighter text-balance bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-200">
         {card.prompt}
       </div>
       <div className="flex gap-2 items-center">
