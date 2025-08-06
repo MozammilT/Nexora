@@ -1,25 +1,70 @@
 import { useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
-import { Scissors, Sparkles } from "lucide-react";
+import { Scissors, Sparkles, BrushCleaning } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 function RemoveObject() {
+  const { getToken } = useAuth();
   const [loading, setLoading] = useState(null);
   const [files, setFiles] = useState([]);
+  const [content, setContent] = useState("");
+  const [input, setInput] = useState("");
 
-  const handleFileUpload = () => {
-    setFiles(files);
-    console.log(files);
+  const handleFileUpload = (newFiles) => {
+    setFiles(newFiles);
+    console.log(newFiles);
+  };
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+  const handleClear = () => {
+    setFiles([]);
+    setContent("");
+    setInput("");
   };
 
-  const onSubmit = (e) => {
+  const formData = new FormData();
+  formData.append("image", files[0]);
+  formData.append("object", input);
+
+  const onSubmit = async (e) => {
     e.preventDefault();
+    if (files.length === 0 || input === "") {
+      toast.error("Title is required", {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+      return;
+    }
     try {
       setLoading(true);
-      console.log("submitted");
+      const { data } = await axios.post(
+        "/ai/remove-object",
+        formData,
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+        // { object: input }
+      );
+      data.success && setContent(data.content);
     } catch (err) {
+      toast.error(err.message, {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -37,12 +82,17 @@ function RemoveObject() {
 
         <div className="w-full max-w-4xl mx-auto min-h-60 border border-dashed bg-black border-neutral-800 rounded-lg">
           <FileUpload
+            files={files}
             onChange={handleFileUpload}
             message={"Supports JPG, PNG, and other image formats"}
           />
         </div>
         <p className="mt-8 mb-4 text-base">Describe object to remove</p>
-        <Textarea placeholder="e.g., watch or spoon , Only single object name." />
+        <Textarea
+          value={input}
+          onChange={handleChange}
+          placeholder="e.g., watch or spoon , Only single object name."
+        />
 
         <div
           onClick={onSubmit}
@@ -65,14 +115,30 @@ function RemoveObject() {
             Processed Image
           </h1>
         </div>
-        <div className="flex-1 flex justify-center items-center">
-          <div className="items-center">
-            <Scissors className="size-10 mx-auto mb-4" />
-            <p className="text-sm font-light text-balance">
-              Enter a topic and click "Remove Object” to get started
-            </p>
+        {content ? (
+          <div className="mt-3 h-full overflow-y-scroll text-sm text-zinc-200">
+            <img src={content} className="rounded-lg" />
           </div>
-        </div>
+        ) : (
+          <div className="flex-1 flex justify-center items-center">
+            <div className="items-center">
+              <Scissors className="size-10 mx-auto mb-4" />
+              <p className="text-sm font-light text-balance">
+                Enter a topic and click "Remove Object” to get started
+              </p>
+            </div>
+          </div>
+        )}
+        {(files.length > 0 || content !== "") && (
+          <button
+            onClick={handleClear}
+            disabled={loading}
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#417DF6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2"
+          >
+            <BrushCleaning className="size-5" />
+            Start Over
+          </button>
+        )}
       </div>
     </div>
   );

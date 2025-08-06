@@ -1,25 +1,75 @@
 import { useState } from "react";
-import { Eraser, Sparkles } from "lucide-react";
+import { Eraser, Sparkles, BrushCleaning } from "lucide-react";
 import { FileUpload } from "@/components/ui/file-upload";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 function RemoveBackground() {
+  const { getToken } = useAuth();
   const [loading, setLoading] = useState(null);
   const [files, setFiles] = useState([]);
+  const [content, setContent] = useState("");
 
-  const handleFileUpload = () => {
-    setFiles(files);
-    console.log(files);
+  const handleFileUpload = (newFiles) => {
+    setFiles(newFiles);
+    console.log(newFiles);
   };
 
-  const onSubmit = (e) => {
+  const formData = new FormData();
+  formData.append("image", files[0]);
+
+  const onSubmit = async (e) => {
     e.preventDefault();
+    if (!files.length) {
+      toast.error("Image is required", {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+      return;
+    }
     try {
       setLoading(true);
+      const { data } = await axios.post("/ai/remove-background", formData, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+          // "Content-Type": "multipart/form-data",
+        },
+      });
+      data.success
+        ? setContent(data.content)
+        : toast.error(data.message, {
+            position: "top-center",
+            style: {
+              borderRadius: "50px",
+              background: "#3b3b3b",
+              color: "#fff",
+            },
+          });
       console.log("submitted");
     } catch (err) {
+      toast.error(err.message, {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
+  };
+
+  const handleClear = () => {
+    setFiles([]);
+    setContent("");
   };
 
   return (
@@ -33,25 +83,28 @@ function RemoveBackground() {
           </h1>
         </div>
         <p className="mt-8 mb-4 text-base">Upload image</p>
-
         <div className="w-full max-w-4xl mx-auto min-h-60 border border-dashed bg-black border-neutral-800 rounded-lg">
           <FileUpload
+            files={files}
             onChange={handleFileUpload}
             message={"Supports JPG, PNG, and other image formats"}
           />
         </div>
-
-        <div
+        <button
+          type="submit"
           onClick={onSubmit}
-          className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white text-sm rounded-lg cursor-pointer px-4 py-2"
+          disabled={loading}
+          className={`w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white text-sm rounded-lg px-4 py-2 ${
+            loading ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           {loading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin cursor-pointer" />
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : (
             <Eraser className="size-5" />
           )}
-          <button>Remove Background</button>
-        </div>
+          Remove Background
+        </button>
       </form>
 
       {/* Right Col  */}
@@ -62,14 +115,31 @@ function RemoveBackground() {
             Processed Image
           </h1>
         </div>
-        <div className="flex-1 flex justify-center items-center">
-          <div className="items-center">
-            <Eraser className="size-10 mx-auto mb-4" />
-            <p className="text-sm font-light text-balance">
-              Enter a topic and click "Remove Background” to get started
-            </p>
+        {content ? (
+          <div className="mt-3 h-full overflow-y-scroll text-sm text-zinc-200">
+            {/* <img src={content} className="rounded-lg" /> */}
+            <img src="/n.png" className="rounded-lg" />
           </div>
-        </div>
+        ) : (
+          <div className="flex-1 flex justify-center items-center">
+            <div className="items-center">
+              <Eraser className="size-10 mx-auto mb-4" />
+              <p className="text-sm font-light text-balance">
+                Enter a topic and click "Remove Background” to get started
+              </p>
+            </div>
+          </div>
+        )}
+        {(files.length > 0 || content !== "") && (
+          <button
+            onClick={handleClear}
+            disabled={loading}
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white text-sm rounded-lg px-4 py-2"
+          >
+            <BrushCleaning className="size-5" />
+            Start Over
+          </button>
+        )}
       </div>
     </div>
   );

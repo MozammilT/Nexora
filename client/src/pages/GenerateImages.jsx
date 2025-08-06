@@ -1,29 +1,74 @@
 import { useState } from "react";
-import { Sparkles, Image, ImageIcon } from "lucide-react";
+import { Sparkles, Image, ImageIcon, BrushCleaning } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 function GenerateImages() {
-  const [style, setStyle] = useState(null);
-  const [publish, setPublish] = useState("");
-  const [loading, setLoading] = useState(null);
   const category = [
     "Realistic",
     "Ghibli",
     "Anime",
     "Cartoon",
     "Fantasy",
-    "Realistic",
+    "Cyberpunk",
     "3D style",
     "Portrait",
   ];
-  const onSubmit = (e) => {
+  const { getToken } = useAuth();
+  const [style, setStyle] = useState(null);
+  const [publish, setPublish] = useState("");
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [content, setContent] = useState("");
+
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+  const handleClear = () => {
+    setContent("");
+    setInput("");
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
+    if (input === "") {
+      toast.error("Description is required", {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+      return;
+    }
     try {
       setLoading(true);
-      console.log("submitted");
+      const { data } = await axios.post(
+        "/ai/generate-image",
+        {
+          prompt: input,
+          publish,
+          style,
+        },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+      data.success && setContent(data.content);
     } catch (err) {
+      toast.error(err.message, {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -38,18 +83,22 @@ function GenerateImages() {
           </h1>
         </div>
         <p className="mt-8 mb-4 text-base">Describe Your Image</p>
-        <Textarea placeholder="Describe what you want to see in the image." />
+        <Textarea
+          value={input}
+          onChange={handleChange}
+          placeholder="Describe what you want to see in the image."
+        />
 
         <p className="mt-8 mb-4 text-base">Style</p>
         <div className="grid grid-cols-4 gap-3">
           {category.map((item, idx) => (
             <span
-              onClick={() => setStyle(idx)}
+              onClick={() => setStyle(item)}
               key={idx}
               className={`text-xs text-center px-4 py-2 rounded-full cursor-pointer transition-colors duration-200
         ${
-          style === idx
-            ? "bg-green-500 text-white border border-green-400"
+          style === item
+            ? "bg-green-500/80 text-white border border-green-400"
             : "bg-green-800/20 text-purple-200 border border-green-700 hover:bg-green-700/30"
         }`}
             >
@@ -68,7 +117,7 @@ function GenerateImages() {
             <div className="w-9 h-5 bg-zinc-600 rounded-full peer-checked:bg-green-600 transition" />
             <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition peer-checked:translate-x-4"></span>
           </label>
-          <p className="text-balance text-sm">Make this image Public</p>
+          <p className="text-balance text-sm">Make this image public</p>
         </div>
         <div
           onClick={onSubmit}
@@ -91,14 +140,30 @@ function GenerateImages() {
             Generated Image
           </h1>
         </div>
-        <div className="flex-1 flex justify-center items-center">
-          <div className="items-center">
-            <Image className="size-10 mx-auto mb-4" />
-            <p className="text-sm font-light text-balance">
-              Enter a topic and click "Generate Image” to get started
-            </p>
+        {content ? (
+          <div className="mt-3 h-full overflow-y-scroll text-sm text-zinc-200">
+            <img src={content} />
           </div>
-        </div>
+        ) : (
+          <div className="flex-1 flex justify-center items-center">
+            <div className="items-center">
+              <Image className="size-10 mx-auto mb-4" />
+              <p className="text-sm font-light text-balance">
+                Enter a topic and click "Generate Image” to get started
+              </p>
+            </div>
+          </div>
+        )}
+        {(input !== "" || content !== "") && (
+          <button
+            onClick={handleClear}
+            disabled={loading}
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00AD25] to-[#04d743] text-white text-sm rounded-lg px-4 py-2"
+          >
+            <BrushCleaning className="size-5" />
+            Start Over
+          </button>
+        )}
       </div>
     </div>
   );

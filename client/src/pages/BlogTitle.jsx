@@ -1,12 +1,15 @@
 "use client";
-import { Hash, Sparkles } from "lucide-react";
+import { Hash, Sparkles, BrushCleaning } from "lucide-react";
 import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-vanish-input.jsx";
 import { useState } from "react";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import Markdown from "react-markdown";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 function BlogTitle() {
-  const [selected, setSetected] = useState(null);
-  const [loading, setLoading] = useState(null);
-
   const placeholders = [
     "What's the first rule of Fight Club?",
     "How chemistry became the coolest subject ever?",
@@ -24,22 +27,56 @@ function BlogTitle() {
     "Travel",
     "Food",
   ];
+
+  const { getToken } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [selected, setSetected] = useState(null);
+  const [input, setInput] = useState("");
+  const [content, setContent] = useState("");
+
   const handleChange = (e) => {
-    console.log(e.target.value);
+    setInput(e.target.value);
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("submitted");
+  const handleClear = () => {
+    setContent("");
+    setInput("");
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    if (input === "") {
+      toast.error("Title is required", {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+      return;
+    }
     try {
       setLoading(true);
-      console.log("submitted");
+      const prompt = `Generate a blog title for the keyword ${input} in the category ${selected}`;
+      const { data } = await axios.post(
+        "/ai/generate-title",
+        { prompt },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
+      );
+      if (data.success) {
+        setContent(data.content);
+      }
     } catch (err) {
+      toast.error(err.message, {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -50,25 +87,25 @@ function BlogTitle() {
         <div className="flex gap-5">
           <Sparkles className="size-6 text-[#8E37EB]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
-            AI Title Generation
+            Title Generation
           </h1>
         </div>
         <p className="mt-8 mb-4 text-base">Keyword</p>
         <PlaceholdersAndVanishInput
+          value={input}
           placeholders={placeholders}
           onChange={handleChange}
-          onSubmit={onSubmit}
         />
         <p className="mt-8 mb-4 text-base">Category</p>
         <div className="grid grid-cols-4 gap-3">
           {category.map((item, idx) => (
             <span
-              onClick={() => setSetected(idx)}
+              onClick={() => setSetected(item)}
               key={idx}
               className={`text-xs text-center px-4 py-2 rounded-full cursor-pointer transition-colors duration-200
         ${
-          selected === idx
-            ? "bg-purple-500 text-white border border-purple-400"
+          selected === item
+            ? "bg-purple-500/80 text-white border border-purple-400"
             : "bg-purple-800/20 text-purple-200 border border-purple-700 hover:bg-purple-700/30"
         }`}
             >
@@ -76,17 +113,21 @@ function BlogTitle() {
             </span>
           ))}
         </div>
-        <div
+        <button
+          type="submit"
           onClick={submitHandler}
-          className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg cursor-pointer px-4 py-2"
+          disabled={loading}
+          className={`w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2 ${
+            loading ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           {loading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin cursor-pointer" />
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : (
             <Hash className="size-5" />
           )}
-          <button>Generate Title</button>
-        </div>
+          Generate Title
+        </button>
       </form>
 
       {/* Right Col  */}
@@ -97,14 +138,31 @@ function BlogTitle() {
             Generated Title
           </h1>
         </div>
-        <div className="flex-1 flex justify-center items-center">
-          <div className="items-center">
-            <Hash className="size-10 mx-auto mb-4" />
-            <p className="text-sm font-light text-balance">
-              Enter a topic and click "Generate Title” to get started
-            </p>
+        {content ? (
+          <div className="mt-3 h-full overflow-y-scroll text-sm text-zinc-200">
+            <div className="reset-tw">
+              <Markdown>{content}</Markdown>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex-1 flex justify-center items-center">
+            <div className="items-center">
+              <Hash className="size-10 mx-auto mb-4" />
+              <p className="text-sm font-light text-balance">
+                Enter a topic and click "Generate Title” to get started
+              </p>
+            </div>
+          </div>
+        )}
+        {(input !== "" || content !== "") && (
+          <button
+            onClick={handleClear}
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2"
+          >
+            <BrushCleaning className="size-5" />
+            Start Over
+          </button>
+        )}
       </div>
     </div>
   );

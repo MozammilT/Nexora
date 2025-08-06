@@ -1,5 +1,5 @@
 "use client";
-import { Sparkles, SquarePen, PencilLine } from "lucide-react";
+import { Sparkles, SquarePen, BrushCleaning } from "lucide-react";
 import { useState } from "react";
 import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-vanish-input.jsx";
 import { useAuth } from "@clerk/clerk-react";
@@ -27,13 +27,29 @@ function WriteArticle() {
   const [selected, setSelected] = useState(articleLength[0]);
   const [content, setContent] = useState("");
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setInput(e.target.value);
   };
+  const handleClear = () => {
+    setContent("");
+    setInput("");
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (input === "") {
+      toast.error("Article topic is required", {
+        position: "top-center",
+        style: {
+          borderRadius: "50px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+      return;
+    }
     try {
       setLoading(true);
       const prompt = `Write an article about ${input} in ${selected.length} words`;
@@ -49,7 +65,14 @@ function WriteArticle() {
       if (data.success) {
         setContent(data.content);
       } else {
-        toast.error(data.message);
+        toast.error(data.message, {
+          position: "top-center",
+          style: {
+            borderRadius: "50px",
+            background: "#3b3b3b",
+            color: "#fff",
+          },
+        });
       }
     } catch (err) {
       toast.error(err.message, {
@@ -69,7 +92,7 @@ function WriteArticle() {
   return (
     <div className="h-full overflow-y-scroll p-6 flex items-start flex-wrap gap-5 text-neutral-200 md:mt-6">
       {/* Left Col */}
-      <form className="bg-[#262626] w-full max-w-lg p-4 rounded-lg border border-[#5d5d5d] shadow-[0_4px_20px_rgba(80,68,229,0.3)]">
+      <form className="bg-[#262626] w-full max-w-lg p-4 rounded-lg shadow-[0_4px_20px_rgba(80,68,229,0.3)]">
         <div className="flex gap-5">
           <Sparkles className="text-blue-400 size-6" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
@@ -78,8 +101,9 @@ function WriteArticle() {
         </div>
         <p className="mt-8 mb-4 text-base">Article Topic</p>
         <PlaceholdersAndVanishInput
-          placeholders={placeholders}
+          value={input}
           onChange={handleChange}
+          placeholders={placeholders}
         />
         <p className="mt-8 mb-4 text-base">Article Length</p>
         <div className="flex flex-wrap gap-4 text-neutral-300">
@@ -88,7 +112,7 @@ function WriteArticle() {
               <div
                 className={`border rounded-full w-fit font-light cursor-pointer transition-colors duration-200 ${
                   selected.length === item.length
-                    ? "border-[#226BFF] bg-[#226BFF]/50 text-white"
+                    ? "border-[#226BFF] bg-[#226BFF] text-white"
                     : "border-[#5a8aff] bg-[#5a8aff]/10 text-[#b2ccff] hover:bg-[#226BFF]/20"
                 }`}
               >
@@ -97,22 +121,25 @@ function WriteArticle() {
             </div>
           ))}
         </div>
-        <div
+        <button
+          type="submit"
           onClick={submitHandler}
           disabled={loading}
-          className="flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white text-sm rounded-lg cursor-pointer px-4 py-2"
+          className={`w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white text-sm rounded-lg px-4 py-2 ${
+            loading ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
         >
           {loading ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin cursor-pointer" />
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           ) : (
             <SquarePen className="size-5" />
           )}
-          <button className="cursor-pointer">Generate Article</button>
-        </div>
+          Generate Article
+        </button>
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col border border-[#5d5d5d] shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[360px] max-h-[600px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[357px] max-h-[600px]">
         <div className="flex gap-5">
           <SquarePen className="text-[#2e79ff]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
@@ -128,12 +155,22 @@ function WriteArticle() {
         ) : (
           <div className="flex-1 flex justify-center items-center">
             <div className="items-center">
-              <PencilLine className="size-10 mx-auto mb-4" />
+              <SquarePen className="size-10 mx-auto mb-4" />
               <p className="text-sm font-light text-balance">
                 Enter a topic and click “Generate article ” to get started
               </p>
             </div>
           </div>
+        )}
+        {(input !== "" || content !== "") && (
+          <button
+            onClick={handleClear}
+            disabled={loading}
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white text-sm rounded-lg px-4 py-2"
+          >
+            <BrushCleaning className="size-5" />
+            Start Over
+          </button>
         )}
       </div>
     </div>
