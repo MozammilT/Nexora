@@ -4,7 +4,7 @@ import React from "react";
 
 export const Loader = ({ text }) => {
   return (
-    <div className="font-sans text-7xl tracking-tighter text-white font-bold [--shadow-color:var(--color-neutral-100)]">
+    <div className="font-sans text-8xl tracking-tighter text-white font-bold [--shadow-color:var(--color-neutral-100)]">
       {text.split("").map((char, i) => (
         <motion.span
           key={i}
