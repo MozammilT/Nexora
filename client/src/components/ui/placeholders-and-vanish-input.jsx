@@ -8,6 +8,7 @@ export function PlaceholdersAndVanishInput({
   placeholders,
   onChange,
   onSubmit,
+  value,
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
@@ -41,7 +42,6 @@ export function PlaceholdersAndVanishInput({
   const canvasRef = useRef(null);
   const newDataRef = useRef([]);
   const inputRef = useRef(null);
-  const [value, setValue] = useState("");
   const [animating, setAnimating] = useState(false);
 
   const draw = useCallback(() => {
@@ -189,7 +189,6 @@ export function PlaceholdersAndVanishInput({
         required
         onChange={(e) => {
           if (!animating) {
-            setValue(e.target.value);
             onChange && onChange(e);
           }
         }}
