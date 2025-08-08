@@ -157,7 +157,7 @@ function BlogTitle() {
         {(input !== "" || content !== "") && (
           <button
             onClick={handleClear}
-            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2"
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#C341F6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
           >
             <BrushCleaning className="size-5" />
             Start Over

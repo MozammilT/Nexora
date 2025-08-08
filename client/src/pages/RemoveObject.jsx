@@ -108,7 +108,7 @@ function RemoveObject() {
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[583px] max-h-[600px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[583px] max-h-[650px]">
         <div className="flex gap-5">
           <Scissors className="size-6 text-[#6769f2]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
@@ -116,8 +116,8 @@ function RemoveObject() {
           </h1>
         </div>
         {content ? (
-          <div className="mt-3 h-full overflow-y-scroll text-sm text-zinc-200">
-            <img src={content} className="rounded-lg" />
+          <div className="mt-3 flex-1 overflow-y-auto flex justify-center items-center">
+            <img src={content} className="rounded-lg max-h-full object-contain" />
           </div>
         ) : (
           <div className="flex-1 flex justify-center items-center">
@@ -133,7 +133,7 @@ function RemoveObject() {
           <button
             onClick={handleClear}
             disabled={loading}
-            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#417DF6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2"
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#417DF6] to-[#8E37EB] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
           >
             <BrushCleaning className="size-5" />
             Start Over

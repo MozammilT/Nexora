@@ -134,7 +134,7 @@ function ReviewResume() {
           <button
             onClick={handleClear}
             disabled={loading}
-            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white text-sm rounded-lg px-4 py-2"
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
           >
             Start Over
           </button>

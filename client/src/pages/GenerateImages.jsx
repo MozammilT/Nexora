@@ -133,7 +133,7 @@ function GenerateImages() {
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[467px] max-h-[600px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col justify-between shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[467px] max-h-[650px]">
         <div className="flex gap-5">
           <Image className="size-5 text-[#0e952b]" />
           <h1 className="text-xl font-semibold tracking-tight text-balance">
@@ -141,8 +141,8 @@ function GenerateImages() {
           </h1>
         </div>
         {content ? (
-          <div className="mt-3 h-full overflow-y-scroll text-sm text-zinc-200">
-            <img src={content} />
+          <div className="mt-3 flex-1 overflow-y-auto flex justify-center items-center">
+            <img src={content} className="rounded-lg max-h-full object-contain" />
           </div>
         ) : (
           <div className="flex-1 flex justify-center items-center">
@@ -158,7 +158,7 @@ function GenerateImages() {
           <button
             onClick={handleClear}
             disabled={loading}
-            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00AD25] to-[#04d743] text-white text-sm rounded-lg px-4 py-2"
+            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00AD25] to-[#04d743] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
           >
             <BrushCleaning className="size-5" />
             Start Over
