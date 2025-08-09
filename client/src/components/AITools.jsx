@@ -43,7 +43,7 @@ function AITools() {
       from: "#F76C1C",
       to: "#F04A3C",
       title: "Background Removal",
-      navigate: "/ai/write-article",
+      navigate: "/ai/remove-background",
       description:
         "Effortlessly remove backgrounds from your images with our AI-driven tool.",
     },
@@ -52,7 +52,7 @@ function AITools() {
       from: "#5C6AF1",
       to: "#427DF5",
       title: "Object Removal",
-      navigate: "/ai/remove-background",
+      navigate: "/ai/remove-object",
       description:
         "Remove unwanted objects from your images seamlessly with our AI object removal tool.",
     },
