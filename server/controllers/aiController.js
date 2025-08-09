@@ -4,6 +4,7 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import FormData from "form-data";
 import pdf from "pdf-parse/lib/pdf-parse.js";
 
 const AI = new OpenAI({
@@ -180,7 +181,7 @@ export const generateTitle = async (req, res) => {
         },
       ],
       temperature: 0.7,
-      max_tokens: 100,
+      max_tokens: 500,
     });
     console.log("[generateTitle] AI API response received");
     const content = response.choices?.[0]?.message?.content;
@@ -398,19 +399,48 @@ export const removeBackground = async (req, res) => {
       });
     }
 
-    const { secure_url } = await cloudinary.uploader.upload(image.path, {
-      // effects: "background_removal",
-      background_removal: "cloudinary_ai",
+    const form = new FormData();
+    form.append("image_file", fs.createReadStream(image.path));
+
+    const { data } = await axios.post(
+      "https://clipdrop-api.co/remove-background/v1",
+      form,
+      {
+        headers: { "x-api-key": process.env.CLIPDROP_API_KEY },
+        responseType: "arraybuffer",
+      }
+    );
+    console.log(
+      "[removeBackground] Received image data from ClipDrop, size:",
+      data.length
+    );
+    const base64Image = `data:image/png;base64,${Buffer.from(
+      data,
+      "binary"
+    ).toString("base64")}`;
+    if (!base64Image) {
+      console.error("[removeBackground] No content received from AI");
+      return res.status(500).json({
+        success: false,
+        message: "No content generated",
+      });
+    }
+
+    console.log("[removeBackground] Uploading image to Cloudinary...");
+    const response = await cloudinary.uploader.upload(base64Image, {
+      resource_type: "image",
     });
+    const tranformedImage = response.secure_url;
+    console.log(
+      "[removeBackground] Image uploaded successfully:",
+      tranformedImage
+    );
 
     // Save to database with safety check
-    let dbInsertSuccess = false;
     try {
-      await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, 'Remove backgroud from the image', ${secure_url}, 'image')`;
-      dbInsertSuccess = true;
+      await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, 'Remove background from the image', ${tranformedImage}, 'image')`;
       console.log("[removeBackground] Content successfully inserted into DB");
     } catch (dbErr) {
-      dbInsertSuccess = false;
       console.error(
         "[removeBackground] Failed to insert content into DB:",
         dbErr
@@ -420,8 +450,7 @@ export const removeBackground = async (req, res) => {
     console.log("[removeBackground] Sending successful response");
     res.json({
       success: true,
-      content: secure_url,
-      dbInsertSuccess,
+      content: tranformedImage,
     });
   } catch (err) {
     console.error("[removeBackground] Error:", err);
@@ -435,7 +464,6 @@ export const removeBackground = async (req, res) => {
 
 export const removeObject = async (req, res) => {
   console.log("[removeObject] Function called");
-  console.log("[removeObject] Request body: ", req.body);
 
   if (!req.file) {
     console.log("[removeObject] No file uploaded");
@@ -488,22 +516,23 @@ export const removeObject = async (req, res) => {
       transformedUrl
     );
 
-    // Save to database with safety check
-    // let dbInsertSuccess = false;
-    // try {
-    //   await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, 'Remove ${object} from the image', ${imageUrl}, 'image')`;
-    //   dbInsertSuccess = true;
-    //   console.log("[removeObject] Content successfully inserted into DB");
-    // } catch (dbErr) {
-    //   dbInsertSuccess = false;
-    //   console.error("[removeObject] Failed to insert content into DB:", dbErr);
-    // }
+    const prompt = `Remove ${object} from the image`;
+
+    let dbInsertSuccess = false;
+    try {
+      await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, ${prompt}, ${transformedUrl}, 'image')`;
+      dbInsertSuccess = true;
+      console.log("[removeObject] Content successfully inserted into DB");
+    } catch (dbErr) {
+      dbInsertSuccess = false;
+      console.error("[removeObject] Failed to insert content into DB:", dbErr);
+    }
 
     console.log("[removeObject] Sending successful response");
     res.json({
       success: true,
       content: transformedUrl,
-      // dbInsertSuccess,
+      dbInsertSuccess,
     });
   } catch (err) {
     console.error("[removeObject] Error:", err);
@@ -522,6 +551,7 @@ export const resumeReview = async (req, res) => {
   // Get userId from the auth middleware
 
   const resume = req.file;
+  console.log("File received:", resume);
   const userId = req.userId;
   console.log("[resumeReview] userId from middleware:", userId);
 
@@ -568,7 +598,7 @@ export const resumeReview = async (req, res) => {
         },
       ],
       temperature: 0.7,
-      max_tokens: 1000,
+      max_tokens: 2000,
     });
     console.log("[generateArticle] AI API response received");
     const content = response.choices?.[0]?.message?.content;
