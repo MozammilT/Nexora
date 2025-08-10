@@ -81,9 +81,9 @@ function Dashboard() {
             <div className="flex justify-between items-center w-72 p-4 px-6 bg-neutral-700 rounded-xl border border-neutral-600">
               <div>
                 <p className="text-[#CECECE] text-xl">Total Creations</p>
-                <p className="text-[#FFFFFF] text-2xl">
-                  <motion.pre>{rounded}</motion.pre>
-                </p>
+                <motion.pre className="text-2xl text-white">
+                  {rounded}
+                </motion.pre>
               </div>
               <div className="size-10 flex justify-center items-center rounded-md bg-gradient-to-br from-[#3588F2] to-[#0BB0D7]">
                 <Sparkles className="size-5 text-white" />

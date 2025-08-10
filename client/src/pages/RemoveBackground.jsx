@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eraser, Sparkles, BrushCleaning } from "lucide-react";
+import { Eraser, Sparkles, BrushCleaning, Download } from "lucide-react";
 import { FileUpload } from "@/components/ui/file-upload";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
@@ -16,6 +16,45 @@ function RemoveBackground() {
   const handleFileUpload = (newFiles) => {
     setFiles(newFiles);
     console.log(newFiles);
+  };
+
+  const handleDownload = async () => {
+    if (!content) return;
+
+    try {
+      const response = await fetch(content);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `generated-image${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Image downloaded successfully!", {
+        position: "top-center",
+        style: {
+          borderRadius: "10px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+    } catch (err) {
+      console.error("Download failed:", err);
+      toast.error("Failed to download image", {
+        position: "top-center",
+        style: {
+          borderRadius: "10px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+    }
   };
 
   const formData = new FormData();
@@ -39,7 +78,6 @@ function RemoveBackground() {
       const { data } = await axios.post("/ai/remove-background", formData, {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
-          // "Content-Type": "multipart/form-data",
         },
       });
       data.success
@@ -117,7 +155,10 @@ function RemoveBackground() {
         </div>
         {content ? (
           <div className="mt-3 flex-1 overflow-y-auto flex justify-center items-center">
-            <img src={content} className="rounded-lg max-h-full object-contain" />
+            <img
+              src={content}
+              className="rounded-lg max-h-full object-contain"
+            />
           </div>
         ) : (
           <div className="flex-1 flex justify-center items-center">
@@ -129,16 +170,28 @@ function RemoveBackground() {
             </div>
           </div>
         )}
-        {(files.length > 0 || content !== "") && (
-          <button
-            onClick={handleClear}
-            disabled={loading}
-            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
-          >
-            <BrushCleaning className="size-5" />
-            Start Over
-          </button>
-        )}
+        <div className="flex gap-3">
+          {(files.length > 0 || content !== "") && (
+            <button
+              onClick={handleClear}
+              disabled={loading}
+              className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
+            >
+              <BrushCleaning className="size-5" />
+              Start Over
+            </button>
+          )}
+          {content !== "" && (
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
+            >
+              <Download className="size-5" />
+              Download
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
