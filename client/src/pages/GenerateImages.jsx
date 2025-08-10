@@ -1,9 +1,15 @@
-import { useState } from "react";
-import { Sparkles, Image, ImageIcon, BrushCleaning } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { useState, useEffect } from "react";
+import {
+  Sparkles,
+  Image,
+  ImageIcon,
+  BrushCleaning,
+  Download,
+} from "lucide-react";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { motion, transform, useAnimate } from "motion/react";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -20,10 +26,14 @@ function GenerateImages() {
   ];
   const { getToken } = useAuth();
   const [style, setStyle] = useState(null);
-  const [publish, setPublish] = useState("");
+  const [publish, setPublish] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
+  const maxLength = 80;
+  const charactersRemaining = maxLength - input.length;
+  const [counterRef, animate] = useAnimate();
+  const mapRemainingToColor = transform([2, 6], ["#ff008c", "#ccc"]);
 
   const handleChange = (e) => {
     setInput(e.target.value);
@@ -39,7 +49,7 @@ function GenerateImages() {
       toast.error("Description is required", {
         position: "top-center",
         style: {
-          borderRadius: "50px",
+          borderRadius: "10px",
           background: "#3b3b3b",
           color: "#fff",
         },
@@ -62,7 +72,7 @@ function GenerateImages() {
       toast.error(err.message, {
         position: "top-center",
         style: {
-          borderRadius: "50px",
+          borderRadius: "10px",
           background: "#3b3b3b",
           color: "#fff",
         },
@@ -71,6 +81,62 @@ function GenerateImages() {
       setLoading(false);
     }
   };
+
+  const handleDownload = async () => {
+    if (!content) return;
+
+    try {
+      const response = await fetch(content);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `generated-image${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Image downloaded successfully!", {
+        position: "top-center",
+        style: {
+          borderRadius: "10px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+    } catch (err) {
+      console.error("Download failed:", err);
+      toast.error("Failed to download image", {
+        position: "top-center",
+        style: {
+          borderRadius: "10px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (charactersRemaining > 6) return;
+
+    const mapRemainingToSpringVelocity = transform([0, 5], [50, 0]);
+
+    animate(
+      counterRef.current,
+      { scale: 1 },
+      {
+        type: "spring",
+        velocity: mapRemainingToSpringVelocity(charactersRemaining),
+        stiffness: 700,
+        damping: 80,
+      }
+    );
+  }, [animate, charactersRemaining]);
 
   return (
     <div className="h-full overflow-y-scroll p-6 flex items-start flex-wrap gap-5 text-neutral-200 md:mt-6">
@@ -83,13 +149,27 @@ function GenerateImages() {
           </h1>
         </div>
         <p className="mt-8 mb-4 text-base">Describe Your Image</p>
-        <Textarea
-          value={input}
-          onChange={handleChange}
-          placeholder="Describe what you want to see in the image."
-        />
-
-        <p className="mt-8 mb-4 text-base">Style</p>
+        <div className="relative font-[18px] leading-none">
+          <textarea
+            value={input}
+            onChange={handleChange}
+            placeholder="Describe what you want to see in the image."
+            className="bg-[#0b1011] text-[#f5f5f5] border-2 border-[#1d2628] rounded-lg px-4 py-[15px] pb-[40px] w-[480px] h-[120px] resize-none focus:border-[var(--hue-blue)] focus:outline-none"
+          />
+          <div className="absolute bottom-[15px] right-[15px] text-[#ccc] pointer-events-none">
+            <motion.span
+              ref={counterRef}
+              style={{
+                color: mapRemainingToColor(charactersRemaining),
+                willChange: "transform",
+              }}
+              className="block"
+            >
+              {charactersRemaining}
+            </motion.span>
+          </div>
+        </div>
+        <p className="my-4 text-base">Style</p>
         <div className="grid grid-cols-4 gap-3">
           {category.map((item, idx) => (
             <span
@@ -133,7 +213,7 @@ function GenerateImages() {
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col justify-between shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[467px] max-h-[650px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col justify-between shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[508px] max-h-[650px]">
         <div className="flex gap-5">
           <Image className="size-5 text-[#0e952b]" />
           <h1 className="text-xl font-semibold tracking-tight text-balance">
@@ -142,7 +222,14 @@ function GenerateImages() {
         </div>
         {content ? (
           <div className="mt-3 flex-1 overflow-y-auto flex justify-center items-center">
-            <img src={content} className="rounded-lg max-h-full object-contain" />
+            <img
+              src={content}
+              className="rounded-lg max-h-full object-contain"
+            />
+            {/* <img
+              src="/ai_gen_img_3.png"
+              className="rounded-lg max-h-full object-contain"
+            /> */}
           </div>
         ) : (
           <div className="flex-1 flex justify-center items-center">
@@ -154,16 +241,28 @@ function GenerateImages() {
             </div>
           </div>
         )}
-        {(input !== "" || content !== "") && (
-          <button
-            onClick={handleClear}
-            disabled={loading}
-            className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00AD25] to-[#04d743] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
-          >
-            <BrushCleaning className="size-5" />
-            Start Over
-          </button>
-        )}
+        <div className="flex gap-3">
+          {input !== "" && (
+            <button
+              onClick={handleClear}
+              disabled={loading}
+              className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00AD25] to-[#04d743] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
+            >
+              <BrushCleaning className="size-5" />
+              Start Over
+            </button>
+          )}
+          {content !== "" && (
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="w-full flex gap-3 mt-10 items-center justify-center bg-gradient-to-r from-[#00AD25] to-[#04d743] text-white text-sm rounded-lg px-4 py-2 cursor-pointer"
+            >
+              <Download className="size-5" />
+              Download
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
