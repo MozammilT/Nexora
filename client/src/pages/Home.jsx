@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
-import AITools from "@/components/AiTools";
+import AITools from "@/components/AITools";
 import Testimonials from "@/components/Testimonials";
 import PricePlan from "@/components/PricePlan";
 import Partners from "@/components/Partners";
