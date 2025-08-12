@@ -13,7 +13,7 @@ function Footer() {
           creation tools. Transform your ideas into reality.
         </p>
       </div>
-      <div className="border-t border-slate-200 max-w-5xl mx-auto">
+      <div className="border-t border-slate-200 max-w-5xl max-sm:max-w-72 mx-auto">
         <div className="max-w-7xl mx-auto px-6 py-6 text-center text-sm font-normal">
           <a href="#">Nexora</a> ©{date}. All rights reserved.
         </div>

@@ -164,7 +164,7 @@ function RemoveBackground() {
           <div className="flex-1 flex justify-center items-center">
             <div className="items-center">
               <Eraser className="size-10 mx-auto mb-4" />
-              <p className="text-sm font-light text-balance">
+              <p className="text-xs md:text-sm font-light text-balance">
                 Enter a topic and click "Remove Background” to get started
               </p>
             </div>

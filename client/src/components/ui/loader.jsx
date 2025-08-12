@@ -4,7 +4,7 @@ import React from "react";
 
 export const Loader = ({ text }) => {
   return (
-    <div className="font-sans text-8xl tracking-tighter text-white font-bold [--shadow-color:var(--color-neutral-100)]">
+    <div className="font-sans md:text-8xl text-7xl tracking-tighter text-white font-bold [--shadow-color:var(--color-neutral-100)]">
       {text.split("").map((char, i) => (
         <motion.span
           key={i}
@@ -25,7 +25,7 @@ export const Loader = ({ text }) => {
             repeatType: "loop",
             delay: i * 0.05,
             ease: "easeInOut",
-            repeatDelay: 2,
+            repeatDelay: 1,
           }}
         >
           {char === " " ? "\u00A0" : char}

@@ -150,7 +150,7 @@ function RemoveObject() {
             value={input}
             onChange={handleChange}
             placeholder="Describe what you want to see in the image."
-            className="bg-[#0b1011] text-[#f5f5f5] border-2 border-[#1d2628] rounded-lg px-4 py-[15px] pb-[40px] w-[480px] h-[100px] resize-none focus:border-[var(--hue-blue)] focus:outline-none"
+            className="bg-[#0b1011] text-[#f5f5f5] border-2 border-[#1d2628] rounded-lg px-4 py-[15px] pb-[40px] w-[480px] max-sm:w-full max-sm:max-w-[350px] h-[120px] resize-none focus:border-[var(--hue-blue)] focus:outline-none"
           />
           <div className="absolute bottom-[15px] right-[15px] text-[#ccc] pointer-events-none">
             <motion.span
@@ -197,7 +197,7 @@ function RemoveObject() {
           <div className="flex-1 flex justify-center items-center">
             <div className="items-center">
               <Scissors className="size-10 mx-auto mb-4" />
-              <p className="text-sm font-light text-balance">
+              <p className="text-xs md:text-sm font-light text-balance">
                 Enter a topic and click "Remove Object” to get started
               </p>
             </div>

@@ -124,7 +124,7 @@ function ReviewResume() {
           <div className="flex-1 flex justify-center items-center">
             <div className="items-center">
               <FileText className="size-10 mx-auto mb-4" />
-              <p className="text-sm font-light text-balance">
+              <p className="text-xs md:text-sm font-light text-balance">
                 Enter a topic and click "Review Resume” to get started
               </p>
             </div>

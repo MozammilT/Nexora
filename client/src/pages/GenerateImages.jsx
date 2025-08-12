@@ -30,8 +30,8 @@ function GenerateImages() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
-  const maxLength = 80;
-  const charactersRemaining = maxLength - input.length;
+  const maxLength = 100;
+  const charactersRemaining = maxLength - input.replace(/\s+/g, "").length;
   const [counterRef, animate] = useAnimate();
   const mapRemainingToColor = transform([2, 6], ["#ff008c", "#ccc"]);
 
@@ -47,6 +47,16 @@ function GenerateImages() {
     e.preventDefault();
     if (input === "") {
       toast.error("Description is required", {
+        position: "top-center",
+        style: {
+          borderRadius: "10px",
+          background: "#3b3b3b",
+          color: "#fff",
+        },
+      });
+      return;
+    } else if (input.length > maxLength) {
+      toast.error("Description exceeds allowed length", {
         position: "top-center",
         style: {
           borderRadius: "10px",
@@ -149,14 +159,14 @@ function GenerateImages() {
           </h1>
         </div>
         <p className="mt-8 mb-4 text-base">Describe Your Image</p>
-        <div className="relative font-[18px] leading-none">
+        <div className="relative leading-none">
           <textarea
             value={input}
             onChange={handleChange}
             placeholder="Describe what you want to see in the image."
-            className="bg-[#0b1011] text-[#f5f5f5] border-2 border-[#1d2628] rounded-lg px-4 py-[15px] pb-[40px] w-[480px] h-[120px] resize-none focus:border-[var(--hue-blue)] focus:outline-none"
+            className="bg-[#0b1011] text-[#f5f5f5] border-2 border-[#1d2628] rounded-lg px-4 py-[15px] pb-[40px] w-[480px] max-sm:w-full max-sm:max-w-[350px] h-[120px] resize-none focus:border-[var(--hue-blue)] focus:outline-none"
           />
-          <div className="absolute bottom-[15px] right-[15px] text-[#ccc] pointer-events-none">
+          <div className="absolute bottom-[15px] right-[15px] max-sm:right-[25px] text-[#ccc] text-lg pointer-events-none">
             <motion.span
               ref={counterRef}
               style={{
@@ -213,7 +223,7 @@ function GenerateImages() {
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col justify-between shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[508px] max-h-[650px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col justify-between shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[508px] max-h-[650px] max-sm:mb-10">
         <div className="flex gap-5">
           <Image className="size-5 text-[#0e952b]" />
           <h1 className="text-xl font-semibold tracking-tight text-balance">
@@ -226,16 +236,12 @@ function GenerateImages() {
               src={content}
               className="rounded-lg max-h-full object-contain"
             />
-            {/* <img
-              src="/ai_gen_img_3.png"
-              className="rounded-lg max-h-full object-contain"
-            /> */}
           </div>
         ) : (
           <div className="flex-1 flex justify-center items-center">
             <div className="items-center">
               <Image className="size-10 mx-auto mb-4" />
-              <p className="text-sm font-light text-balance">
+              <p className="text-xs md:text-sm font-light text-balance">
                 Enter a topic and click "Generate Image” to get started
               </p>
             </div>

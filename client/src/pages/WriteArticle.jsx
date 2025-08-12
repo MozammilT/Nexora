@@ -139,7 +139,7 @@ function WriteArticle() {
       </form>
 
       {/* Right Col  */}
-      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[357px] max-h-[600px]">
+      <div className="w-full max-w-lg p-4 bg-[#262626] rounded-lg flex flex-col shadow-[0_4px_20px_rgba(80,68,229,0.3)] min-h-[357px] max-h-[600px] max-sm:mb-10">
         <div className="flex gap-5">
           <SquarePen className="text-[#2e79ff]" />
           <h1 className="text-xl font-semibold tracking-tighter text-balance">
